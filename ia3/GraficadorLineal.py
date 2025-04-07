@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 def generar_grafica():
     try:
@@ -22,46 +23,54 @@ def generar_grafica():
         x_vals = np.linspace(x_inicio, x_final, 500)
         y_vals = pendiente * x_vals + intercepto
 
-        plt.style.use("seaborn-darkgrid")
-        plt.plot(x_vals, y_vals, color="red", linewidth=2, label=expresion)
-        plt.title("Representación Gráfica de la Función")
-        plt.xlabel("Eje X")
-        plt.ylabel("Eje Y")
-        plt.axhline(0, color='black', linestyle='--', linewidth=0.7)
-        plt.axvline(0, color='black', linestyle='--', linewidth=0.7)
-        plt.legend()
-        plt.show()
+        fig, ax = plt.subplots(figsize=(5, 4))
+        ax.plot(x_vals, y_vals, color="#fdd835", linewidth=2, label=expresion)  # Amarillo brillante
+        ax.axhline(0, color='#6200ea', linestyle='--', linewidth=0.7)  # Lila
+        ax.axvline(0, color='#6200ea', linestyle='--', linewidth=0.7)  # Lila
+        ax.set_title("Gráfica de la Función Lineal", fontsize=16, color="#e040fb")  # Lila brillante
+        ax.set_xlabel("Eje X", fontsize=12, color="#f50057")  # Rosa vibrante
+        ax.set_ylabel("Eje Y", fontsize=12, color="#f50057")  # Rosa vibrante
+        ax.legend()
+        ax.grid(True)
+
+        canvas = FigureCanvasTkAgg(fig, master=frame_grafica)
+        canvas.draw()
+        canvas.get_tk_widget().pack()
+
     except ValueError:
         messagebox.showerror("Error", "Por favor, ingrese valores válidos")
 
 ventana = tk.Tk()
 ventana.title("Calculadora de Función Lineal")
-ventana.geometry("420x380")
-ventana.configure(bg="#d9f0ff")
+ventana.geometry("600x650")
+ventana.configure(bg="#000")
 
-titulo = tk.Label(ventana, text="Gráfica de Función", font=("Verdana", 16, "bold"), bg="#d9f0ff", fg="#004080")
-titulo.pack(pady=10)
+titulo = tk.Label(ventana, text="Gráfica de Función", font=("Arial", 18, "bold"), bg="#000", fg="#00c853") 
+titulo.pack(pady=20)
 
-tk.Label(ventana, text="Pendiente (m):", font=("Verdana", 12), bg="#d9f0ff").pack()
-input_pendiente = tk.Entry(ventana, font=("Verdana", 12), justify="center")
-input_pendiente.pack()
+tk.Label(ventana, text="Pendiente (m):", font=("Arial", 12), bg="#000", fg="#00c853").pack()
+input_pendiente = tk.Entry(ventana, font=("Arial", 12), justify="center", bd=2, relief="solid", fg="#6200ea")  
+input_pendiente.pack(pady=5)
 
-tk.Label(ventana, text="Intercepto (b):", font=("Verdana", 12), bg="#d9f0ff").pack()
-input_intercepto = tk.Entry(ventana, font=("Verdana", 12), justify="center")
-input_intercepto.pack()
+tk.Label(ventana, text="Intercepto (b):", font=("Arial", 12), bg="#000", fg="#00c853").pack()
+input_intercepto = tk.Entry(ventana, font=("Arial", 12), justify="center", bd=2, relief="solid", fg="#6200ea") 
+input_intercepto.pack(pady=5)
 
-tk.Label(ventana, text="Rango mínimo de x:", font=("Verdana", 12), bg="#d9f0ff").pack()
-input_xmin = tk.Entry(ventana, font=("Verdana", 12), justify="center")
-input_xmin.pack()
+tk.Label(ventana, text="Rango mínimo de x:", font=("Arial", 12), bg="#000", fg="#00c853").pack()
+input_xmin = tk.Entry(ventana, font=("Arial", 12), justify="center", bd=2, relief="solid", fg="#6200ea")  
+input_xmin.pack(pady=5)
 
-tk.Label(ventana, text="Rango máximo de x:", font=("Verdana", 12), bg="#d9f0ff").pack()
-input_xmax = tk.Entry(ventana, font=("Verdana", 12), justify="center")
-input_xmax.pack()
+tk.Label(ventana, text="Rango máximo de x:", font=("Arial", 12), bg="#000", fg="#00c853").pack()
+input_xmax = tk.Entry(ventana, font=("Arial", 12), justify="center", bd=2, relief="solid", fg="#6200ea")  
+input_xmax.pack(pady=5)
 
-btn_calcular = tk.Button(ventana, text="Graficar", command=generar_grafica, font=("Verdana", 12, "bold"), bg="#336699", fg="white")
-btn_calcular.pack(pady=15)
+btn_calcular = tk.Button(ventana, text="Graficar", command=generar_grafica, font=("Arial", 12, "bold"), bg="#00c853", fg="white", bd=2, relief="solid")  
+btn_calcular.pack(pady=20)
 
-etiqueta_resultado = tk.Label(ventana, text="", font=("Verdana", 12), bg="#d9f0ff", fg="#004080")
+etiqueta_resultado = tk.Label(ventana, text="", font=("Arial", 12), bg="#000", fg="#00c853")
 etiqueta_resultado.pack()
+
+frame_grafica = tk.Frame(ventana, bg="#000")
+frame_grafica.pack(pady=20)
 
 ventana.mainloop()
